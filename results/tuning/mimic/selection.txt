@@ -1,0 +1,65 @@
+  strategy                                      hp_grid  val_auc_pr  val_auc_roc
+FedAdagrad  {"eta_adagrad": 0.01, "tau_adagrad": 0.001}    0.264213     0.875391
+FedAdagrad   {"eta_adagrad": 0.01, "tau_adagrad": 0.01}    0.262973     0.875340
+FedAdagrad    {"eta_adagrad": 0.1, "tau_adagrad": 0.01}    0.256371     0.861178
+FedAdagrad   {"eta_adagrad": 0.1, "tau_adagrad": 0.001}    0.240792     0.863321
+FedAdagrad {"eta_adagrad": 0.001, "tau_adagrad": 0.001}    0.157080     0.844498
+FedAdagrad  {"eta_adagrad": 0.001, "tau_adagrad": 0.01}    0.153724     0.842188
+   FedAdam         {"eta_adam": 0.01, "tau_adam": 0.01}    0.265401     0.875260
+   FedAdam        {"eta_adam": 0.01, "tau_adam": 0.001}    0.264585     0.875426
+   FedAdam          {"eta_adam": 0.1, "tau_adam": 0.01}    0.257445     0.871820
+   FedAdam       {"eta_adam": 0.001, "tau_adam": 0.001}    0.256841     0.874716
+   FedAdam         {"eta_adam": 0.1, "tau_adam": 0.001}    0.247425     0.868950
+   FedAdam        {"eta_adam": 0.001, "tau_adam": 0.01}    0.232429     0.871494
+    FedAvg                                           {}    0.268323     0.875441
+FedCluster                       {"eps_quantile": 0.75}    0.260876     0.864565
+FedCluster                        {"eps_quantile": 0.5}    0.256554     0.865191
+FedCluster                       {"eps_quantile": 0.25}    0.200897     0.846284
+   FedProx                                {"mu": 0.001}    0.269855     0.874714
+   FedProx                                 {"mu": 0.01}    0.263890     0.876057
+   FedProx                                  {"mu": 0.1}    0.261791     0.877126
+   FedProx                                  {"mu": 1.0}    0.230687     0.872794
+   FedYogi         {"eta_yogi": 0.01, "tau_yogi": 0.01}    0.265307     0.875180
+   FedYogi        {"eta_yogi": 0.01, "tau_yogi": 0.001}    0.265264     0.875474
+   FedYogi          {"eta_yogi": 0.1, "tau_yogi": 0.01}    0.257247     0.871568
+   FedYogi       {"eta_yogi": 0.001, "tau_yogi": 0.001}    0.254722     0.874108
+   FedYogi         {"eta_yogi": 0.1, "tau_yogi": 0.001}    0.247421     0.868956
+   FedYogi        {"eta_yogi": 0.001, "tau_yogi": 0.01}    0.228488     0.871033
+  SCAFFOLD          {"eta_g": 1.0, "lr_scaffold": 0.01}    0.275079     0.882279
+  SCAFFOLD          {"eta_g": 0.5, "lr_scaffold": 0.01}    0.267947     0.883791
+  SCAFFOLD         {"eta_g": 1.0, "lr_scaffold": 0.003}    0.260957     0.882489
+  SCAFFOLD         {"eta_g": 0.5, "lr_scaffold": 0.003}    0.245658     0.880178
+  SCAFFOLD          {"eta_g": 1.0, "lr_scaffold": 0.03}    0.242209     0.878444
+  SCAFFOLD           {"eta_g": 1.0, "lr_scaffold": 0.1}    0.241885     0.872426
+  SCAFFOLD           {"eta_g": 0.5, "lr_scaffold": 0.1}    0.236783     0.869251
+  SCAFFOLD          {"eta_g": 0.5, "lr_scaffold": 0.03}    0.236152     0.875992
+  SCAFFOLD           {"eta_g": 0.5, "lr_scaffold": 0.3}    0.235755     0.866170
+  SCAFFOLD           {"eta_g": 1.0, "lr_scaffold": 1.0}    0.233163     0.859386
+  SCAFFOLD           {"eta_g": 1.0, "lr_scaffold": 0.3}    0.232538     0.867923
+  SCAFFOLD           {"eta_g": 0.5, "lr_scaffold": 1.0}    0.230718     0.856868
+
+Selected: {
+  "FedAdagrad": {
+    "eta_adagrad": 0.01,
+    "tau_adagrad": 0.001
+  },
+  "FedAdam": {
+    "eta_adam": 0.01,
+    "tau_adam": 0.01
+  },
+  "FedAvg": {},
+  "FedCluster": {
+    "eps_quantile": 0.75
+  },
+  "FedProx": {
+    "mu": 0.001
+  },
+  "FedYogi": {
+    "eta_yogi": 0.01,
+    "tau_yogi": 0.01
+  },
+  "SCAFFOLD": {
+    "eta_g": 1.0,
+    "lr_scaffold": 0.01
+  }
+}

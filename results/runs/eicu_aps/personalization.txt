@@ -1,0 +1,55 @@
+[seed 42] FedAvg     pooled AUC-ROC 0.8656 -> 0.8716  AUC-PR 0.5084 -> 0.5201
+[seed 42] FedProx    pooled AUC-ROC 0.8677 -> 0.8724  AUC-PR 0.5122 -> 0.5213
+[seed 42] SCAFFOLD   pooled AUC-ROC 0.8760 -> 0.8780  AUC-PR 0.5341 -> 0.5377
+[seed 42] FedAdagrad pooled AUC-ROC 0.8662 -> 0.8723  AUC-PR 0.5096 -> 0.5210
+[seed 42] FedAdam    pooled AUC-ROC 0.8623 -> 0.8699  AUC-PR 0.5141 -> 0.5280
+[seed 42] FedYogi    pooled AUC-ROC 0.8623 -> 0.8699  AUC-PR 0.5134 -> 0.5276
+[seed 42] FedCluster pooled AUC-ROC 0.8671 -> 0.8725  AUC-PR 0.5077 -> 0.5177
+[seed 43] FedAvg     pooled AUC-ROC 0.8701 -> 0.8710  AUC-PR 0.5234 -> 0.5273
+[seed 43] FedProx    pooled AUC-ROC 0.8732 -> 0.8727  AUC-PR 0.5257 -> 0.5290
+[seed 43] SCAFFOLD   pooled AUC-ROC 0.8798 -> 0.8811  AUC-PR 0.5402 -> 0.5453
+[seed 43] FedAdagrad pooled AUC-ROC 0.8697 -> 0.8713  AUC-PR 0.5215 -> 0.5261
+[seed 43] FedAdam    pooled AUC-ROC 0.8684 -> 0.8705  AUC-PR 0.5195 -> 0.5266
+[seed 43] FedYogi    pooled AUC-ROC 0.8684 -> 0.8704  AUC-PR 0.5193 -> 0.5263
+[seed 43] FedCluster pooled AUC-ROC 0.8701 -> 0.8709  AUC-PR 0.5203 -> 0.5237
+[seed 44] FedAvg     pooled AUC-ROC 0.8703 -> 0.8752  AUC-PR 0.5141 -> 0.5230
+[seed 44] FedProx    pooled AUC-ROC 0.8724 -> 0.8755  AUC-PR 0.5161 -> 0.5228
+[seed 44] SCAFFOLD   pooled AUC-ROC 0.8792 -> 0.8808  AUC-PR 0.5359 -> 0.5406
+[seed 44] FedAdagrad pooled AUC-ROC 0.8692 -> 0.8742  AUC-PR 0.5136 -> 0.5219
+[seed 44] FedAdam    pooled AUC-ROC 0.8678 -> 0.8730  AUC-PR 0.5144 -> 0.5237
+[seed 44] FedYogi    pooled AUC-ROC 0.8676 -> 0.8731  AUC-PR 0.5146 -> 0.5240
+[seed 44] FedCluster pooled AUC-ROC 0.8705 -> 0.8751  AUC-PR 0.5128 -> 0.5213
+[seed 45] FedAvg     pooled AUC-ROC 0.8685 -> 0.8708  AUC-PR 0.5187 -> 0.5249
+[seed 45] FedProx    pooled AUC-ROC 0.8715 -> 0.8724  AUC-PR 0.5235 -> 0.5268
+[seed 45] SCAFFOLD   pooled AUC-ROC 0.8770 -> 0.8784  AUC-PR 0.5398 -> 0.5430
+[seed 45] FedAdagrad pooled AUC-ROC 0.8682 -> 0.8706  AUC-PR 0.5175 -> 0.5238
+[seed 45] FedAdam    pooled AUC-ROC 0.8667 -> 0.8702  AUC-PR 0.5247 -> 0.5337
+[seed 45] FedYogi    pooled AUC-ROC 0.8670 -> 0.8701  AUC-PR 0.5249 -> 0.5326
+[seed 45] FedCluster pooled AUC-ROC 0.8676 -> 0.8701  AUC-PR 0.5159 -> 0.5224
+[seed 46] FedAvg     pooled AUC-ROC 0.8691 -> 0.8740  AUC-PR 0.5239 -> 0.5335
+[seed 46] FedProx    pooled AUC-ROC 0.8711 -> 0.8747  AUC-PR 0.5278 -> 0.5350
+[seed 46] SCAFFOLD   pooled AUC-ROC 0.8778 -> 0.8797  AUC-PR 0.5466 -> 0.5524
+[seed 46] FedAdagrad pooled AUC-ROC 0.8693 -> 0.8743  AUC-PR 0.5234 -> 0.5328
+[seed 46] FedAdam    pooled AUC-ROC 0.8684 -> 0.8723  AUC-PR 0.5266 -> 0.5361
+[seed 46] FedYogi    pooled AUC-ROC 0.8686 -> 0.8727  AUC-PR 0.5270 -> 0.5373
+[seed 46] FedCluster pooled AUC-ROC 0.8687 -> 0.8735  AUC-PR 0.5220 -> 0.5317
+            global_auc_roc  global_auc_pr  pers_auc_roc  pers_auc_pr
+strategy                                                            
+FedAvg              0.8687         0.5177        0.8725       0.5258
+FedProx             0.8712         0.5211        0.8736       0.5270
+SCAFFOLD            0.8779         0.5393        0.8796       0.5438
+FedAdagrad          0.8685         0.5171        0.8725       0.5251
+FedAdam             0.8667         0.5198        0.8712       0.5296
+FedYogi             0.8668         0.5198        0.8713       0.5296
+FedCluster          0.8688         0.5157        0.8724       0.5234
+
+Per-client AUC-PR gain from fine-tuning:
+              mean  median
+strategy                 
+FedAdagrad 0.0020  0.0014
+FedAdam    0.0019  0.0024
+FedAvg     0.0014  0.0017
+FedCluster 0.0024  0.0029
+FedProx    0.0014  0.0024
+FedYogi    0.0019  0.0017
+SCAFFOLD   0.0013  0.0008

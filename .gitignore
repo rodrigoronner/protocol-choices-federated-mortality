@@ -1,0 +1,24 @@
+# Patient-level data never leave the machine (PhysioNet data use agreements)
+data/
+*.npz
+*.pt
+results/runs/**/clients_seed*.csv
+results/runs/**/*per_client*.csv
+results/archive/
+
+# Local-only material
+manuscript/
+notes/
+results/runs/**/log*.txt
+results/runs/run_all_log*.txt
+results/runs/.chain_after_queue.sh
+
+# Python / OS
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+
+# Logs contain local paths; archives are local copies
+results/**/log*.txt
+*.zip

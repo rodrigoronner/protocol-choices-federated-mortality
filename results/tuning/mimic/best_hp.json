@@ -1,0 +1,25 @@
+{
+  "FedAdagrad": {
+    "eta_adagrad": 0.01,
+    "tau_adagrad": 0.001
+  },
+  "FedAdam": {
+    "eta_adam": 0.01,
+    "tau_adam": 0.01
+  },
+  "FedAvg": {},
+  "FedCluster": {
+    "eps_quantile": 0.75
+  },
+  "FedProx": {
+    "mu": 0.001
+  },
+  "FedYogi": {
+    "eta_yogi": 0.01,
+    "tau_yogi": 0.01
+  },
+  "SCAFFOLD": {
+    "eta_g": 1.0,
+    "lr_scaffold": 0.01
+  }
+}
