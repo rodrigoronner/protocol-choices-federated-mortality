@@ -22,3 +22,4 @@ __pycache__/
 # Logs contain local paths; archives are local copies
 results/**/log*.txt
 *.zip
+results/runs/control_log.txt

@@ -33,8 +33,12 @@ from models import get_model  # noqa: E402
 RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "results")
 
 STRATEGIES = ["FedAvg", "FedProx", "SCAFFOLD", "FedAdagrad", "FedAdam", "FedYogi", "FedCluster"]
+# Control for SCAFFOLD: FedAvg aggregation with the same local optimizer as
+# SCAFFOLD (SGD) and a learning rate tuned on the same grid, so that any gap
+# to SCAFFOLD is due to its control variates rather than to its optimizer.
+CONTROL_STRATEGIES = ["FedAvgSGD"]
 
-DEFAULT_HP = dict(mu=0.1, eta_g=1.0, lr_scaffold=0.03, eta_adagrad=0.01, tau_adagrad=1e-3, eta_adam=0.01, tau_adam=1e-3,
+DEFAULT_HP = dict(mu=0.1, eta_g=1.0, lr_scaffold=0.03, lr_sgd=0.03, eta_adagrad=0.01, tau_adagrad=1e-3, eta_adam=0.01, tau_adam=1e-3,
                   eta_yogi=0.01, tau_yogi=1e-3, eps_quantile=0.5)
 
 
@@ -64,7 +68,12 @@ def run_strategy(strategy, bundle, model_name="dnn", rounds=50, local_epochs=3,
     # Clients sampled per round when participation < 1; the same sequence of
     # samples for every strategy within a seed, so comparisons stay paired.
     # SCAFFOLD trains locally with SGD at its own (tuned) learning rate.
-    local_opt, local_lr = ("sgd", hp["lr_scaffold"]) if strategy == "SCAFFOLD" else ("adam", lr)
+    if strategy == "SCAFFOLD":
+        local_opt, local_lr = "sgd", hp["lr_scaffold"]
+    elif strategy == "FedAvgSGD":
+        local_opt, local_lr = "sgd", hp["lr_sgd"]
+    else:
+        local_opt, local_lr = "adam", lr
 
     n_per_round = max(1, int(round(participation * len(names))))
     sampler = np.random.RandomState(seed + 10_000)
@@ -100,7 +109,7 @@ def run_strategy(strategy, bundle, model_name="dnn", rounds=50, local_epochs=3,
             client_flats.append(flat)
             client_ns.append(n)
 
-        if strategy in ("FedAvg", "FedProx"):
+        if strategy in ("FedAvg", "FedProx", "FedAvgSGD"):
             global_flat = fed.aggregate_fedavg(client_flats, client_ns)
         elif strategy in ("FedAdagrad", "FedAdam", "FedYogi"):
             global_flat = server_opt.step(global_flat, client_flats, client_ns)

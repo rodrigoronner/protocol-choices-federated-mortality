@@ -8,6 +8,9 @@
     "tau_adam": 0.001
   },
   "FedAvg": {},
+  "FedAvgSGD": {
+    "lr_sgd": 1.0
+  },
   "FedCluster": {
     "eps_quantile": 0.25
   },

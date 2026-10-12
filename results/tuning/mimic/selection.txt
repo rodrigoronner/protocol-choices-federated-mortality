@@ -12,6 +12,12 @@ FedAdagrad  {"eta_adagrad": 0.001, "tau_adagrad": 0.01}    0.153724     0.842188
    FedAdam         {"eta_adam": 0.1, "tau_adam": 0.001}    0.247425     0.868950
    FedAdam        {"eta_adam": 0.001, "tau_adam": 0.01}    0.232429     0.871494
     FedAvg                                           {}    0.268323     0.875441
+ FedAvgSGD                              {"lr_sgd": 0.1}    0.268173     0.877232
+ FedAvgSGD                              {"lr_sgd": 0.3}    0.265233     0.873705
+ FedAvgSGD                             {"lr_sgd": 0.03}    0.263165     0.876806
+ FedAvgSGD                             {"lr_sgd": 0.01}    0.258184     0.876978
+ FedAvgSGD                              {"lr_sgd": 1.0}    0.257367     0.868146
+ FedAvgSGD                            {"lr_sgd": 0.003}    0.249432     0.874499
 FedCluster                       {"eps_quantile": 0.75}    0.260876     0.864565
 FedCluster                        {"eps_quantile": 0.5}    0.256554     0.865191
 FedCluster                       {"eps_quantile": 0.25}    0.200897     0.846284
@@ -48,6 +54,9 @@ Selected: {
     "tau_adam": 0.01
   },
   "FedAvg": {},
+  "FedAvgSGD": {
+    "lr_sgd": 0.1
+  },
   "FedCluster": {
     "eps_quantile": 0.75
   },

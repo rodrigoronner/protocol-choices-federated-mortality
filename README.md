@@ -31,6 +31,7 @@ instead of the best validation round, and untuned hyperparameters.
 | `experiments/tune.py` | Per-strategy hyperparameter grid search on validation AUC-PR |
 | `experiments/jobs.py` | The experiment list (main, ablations, federation variants, sensitivity analyses) and a parallel runner |
 | `experiments/run_fl_experiments.py`, `run_centralized.py` | One federated or centralized run (one dataset, configuration and seed) |
+| `experiments/run_control.py` | Control for SCAFFOLD: FedAvg with local SGD tuned on SCAFFOLD's learning-rate grid, and the paired comparison with SCAFFOLD |
 | `experiments/aggregate.py` | Means, confidence intervals, Friedman and Holm-corrected paired tests |
 | `experiments/analyze_predictions.py`, `recalibrate.py`, `personalize.py`, `subgroups.py`, `leakage_check.py` | Calibration, Platt/isotonic recalibration, local fine-tuning, subgroup performance, leakage of discharge-coded features |
 | `experiments/make_tables.py`, `make_figures.py` | Every table and figure of the manuscript |

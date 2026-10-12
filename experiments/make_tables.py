@@ -175,19 +175,27 @@ def table_tuning():
         "FedAdam": "$\\eta \\in \\{0.001, 0.01, 0.1\\}$, $\\tau \\in \\{10^{-3}, 10^{-2}\\}$",
         "FedYogi": "$\\eta \\in \\{0.001, 0.01, 0.1\\}$, $\\tau \\in \\{10^{-3}, 10^{-2}\\}$",
         "FedCluster": "DBSCAN radius quantile $\\in \\{0.25, 0.5, 0.75\\}$",
+        "FedAvgSGD": "local SGD lr $\\in \\{0.003, 0.01, 0.03, 0.1, 0.3, 1\\}$\\textsuperscript{a}",
     }
+    labels = {"FedAvgSGD": "FedAvg-SGD (control)"}
     names = {"mu": "$\\mu$", "lr_scaffold": "lr", "eta_g": "$\\eta_g$", "eta_adagrad": "$\\eta$",
              "tau_adagrad": "$\\tau$", "eta_adam": "$\\eta$", "tau_adam": "$\\tau$", "eta_yogi": "$\\eta$",
-             "tau_yogi": "$\\tau$", "eps_quantile": "q"}
+             "tau_yogi": "$\\tau$", "eps_quantile": "q", "lr_sgd": "lr"}
     best = {ds: json.load(open(os.path.join(TUNING, ds, "best_hp.json"))) for ds in ("mimic", "eicu")}
+    n_cfg = {ds: pd.read_csv(os.path.join(TUNING, ds, "grid_all.csv")).groupby("strategy").size()
+             for ds in ("mimic", "eicu")}
     lines = []
     for s, g in grids.items():
+        if s not in best["mimic"] or s not in best["eicu"]:
+            continue
         sel = []
         for ds in ("mimic", "eicu"):
             sel.append(", ".join(f"{names[k]} = {v:g}" for k, v in sorted(best[ds][s].items())))
-        lines.append(f"{s} & {g} & {sel[0]} & {sel[1]} \\\\")
-    head = ("\\begin{tabular}{@{}llll@{}}\n\\toprule\n"
-            "Strategy & Grid & Selected, MIMIC-IV & Selected, eICU-CRD \\\\\n\\midrule\n")
+        if s == "FedAvgSGD":
+            lines.append("\\midrule")
+        lines.append(f"{labels.get(s, s)} & {g} & {n_cfg['mimic'][s]}/{n_cfg['eicu'][s]} & {sel[0]} & {sel[1]} \\\\")
+    head = ("\\begin{tabular}{@{}lllll@{}}\n\\toprule\n"
+            "Strategy & Grid & Configs & Selected, MIMIC-IV & Selected, eICU-CRD \\\\\n\\midrule\n")
     write("tabA1_tuning", head + "\n".join(lines) + "\n\\bottomrule\n\\end{tabular}\n")
 
 
@@ -249,6 +257,32 @@ def table_subgroups():
     write("tabA3_subgroups", head + "\n".join(lines) + "\n\\bottomrule\n\\end{tabular}\n")
 
 
+# ---------------------------------------------------------------------------
+# Appendix A4: synthetic positives created by client-level SMOTE-Tomek
+# ---------------------------------------------------------------------------
+def table_synthetic():
+    def load_clients(ds):
+        d = os.path.join(RUNS, ds, "imb_smote")
+        df = pd.concat([pd.read_csv(p) for p in glob.glob(os.path.join(glob.escape(d), "clients_seed*.csv"))])
+        return df.groupby("client")[["n_train", "n_pos_train", "n_synthetic_pos", "synthetic_share_of_pos"]].mean()
+    m = load_clients("mimic").sort_values("n_train", ascending=False)
+    lines = []
+    for unit, r in m.iterrows():
+        lines.append(f"{unit} & {r.n_train:,.0f} & {r.n_pos_train:,.0f} & {r.n_synthetic_pos:,.0f} & "
+                     f"{100 * r.synthetic_share_of_pos:.1f}\\% \\\\")
+    e = load_clients("eicu")
+    lines.append("\\midrule")
+    lines.append(f"eICU-CRD, 49 hospitals (median) & {e.n_train.median():,.0f} & {e.n_pos_train.median():,.0f} & "
+                 f"{e.n_synthetic_pos.median():,.0f} & {100 * e.synthetic_share_of_pos.median():.1f}\\% \\\\")
+    lines.append(f"eICU-CRD, 49 hospitals (range) & {e.n_train.min():,.0f}--{e.n_train.max():,.0f} & "
+                 f"{e.n_pos_train.min():,.0f}--{e.n_pos_train.max():,.0f} & {e.n_synthetic_pos.min():,.0f}--"
+                 f"{e.n_synthetic_pos.max():,.0f} & {100 * e.synthetic_share_of_pos.min():.1f}--"
+                 f"{100 * e.synthetic_share_of_pos.max():.1f}\\% \\\\")
+    head = ("\\begin{tabular}{@{}lrrrr@{}}\n\\toprule\n"
+            "Client & Training stays & Real deaths & Synthetic deaths & Synthetic share \\\\\n\\midrule\n")
+    write("tabA4_synthetic", head + "\n".join(lines) + "\n\\bottomrule\n\\end{tabular}\n")
+
+
 if __name__ == "__main__":
     table_cohorts()
     table_main()
@@ -257,3 +291,4 @@ if __name__ == "__main__":
     table_tuning()
     table_robustness()
     table_subgroups()
+    table_synthetic()

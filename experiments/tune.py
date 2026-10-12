@@ -66,6 +66,9 @@ EXTRA_GRID = {
     for ds in ("mimic", "eicu")
 }
 EXTRA_GRID["eicu"] += [("SCAFFOLD", {"lr_scaffold": 3.0, "eta_g": eta}) for eta in (0.5, 1.0)]
+# Control strategy FedAvgSGD: the same local learning rates as SCAFFOLD.
+for ds, top in (("mimic", (1.0,)), ("eicu", (1.0, 3.0))):
+    EXTRA_GRID[ds] += [("FedAvgSGD", {"lr_sgd": lr}) for lr in (0.003, 0.01, 0.03, 0.1, 0.3) + top]
 
 
 def run_worker(worker, n_workers, seed, config, rounds, dataset, imbalance="weighted"):
