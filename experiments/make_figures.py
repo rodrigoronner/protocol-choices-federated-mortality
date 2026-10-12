@@ -25,6 +25,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
+from scipy import stats  # noqa: E402
 import torch  # noqa: E402
 from sklearn.linear_model import LogisticRegression  # noqa: E402
 
@@ -110,8 +111,30 @@ def fig_federations():
 
 
 # ---------------------------------------------------------------------------
-# Figure 3: SCAFFOLD minus each alternative, paired over seeds, 95% CI
+# Figure 3: SCAFFOLD minus each alternative, paired over seeds, 95% CI, and
+# the FedAvg-SGD control that splits SCAFFOLD's margin over FedAvg in two
 # ---------------------------------------------------------------------------
+def paired_ci(a, b):
+    d = (a - b.reindex(a.index)).to_numpy()
+    half = stats.t.ppf(0.975, len(d) - 1) * d.std(ddof=1) / np.sqrt(len(d))
+    return d.mean(), d.mean() - half, d.mean() + half
+
+
+def control_decomposition():
+    rows = []
+    for ds in ("mimic", "eicu"):
+        main = load(ds, "main")
+        ctl = load(ds, "ctl_fedavg_sgd")
+        for m in METRICS:
+            sc = main[main["strategy"] == "SCAFFOLD"].set_index("seed")[m]
+            fa = main[main["strategy"] == "FedAvg"].set_index("seed")[m]
+            sg = ctl.set_index("seed")[m]
+            for part, a, b in (("sgd", sg, fa), ("cv", sc, sg)):
+                mean, lo, hi = paired_ci(a, b)
+                rows.append(dict(dataset=ds, metric=m, part=part, mean=mean, lo=lo, hi=hi))
+    return pd.DataFrame(rows)
+
+
 def fig_paired_differences():
     rows = []
     for ds in DATASETS:
@@ -123,8 +146,11 @@ def fig_paired_differences():
     labels = order[:-1] + ["Centralized"]
     colors = {"mimic": BLUE, "eicu": ORANGE, "eicu_aps": AQUA}
     offs = {"mimic": -0.22, "eicu": 0.0, "eicu_aps": 0.22}
-    fig, axes = plt.subplots(1, 2, figsize=(FULL, 2.5), sharey=True)
-    for ax, (m, mlabel) in zip(axes, METRICS.items()):
+    fig = plt.figure(figsize=(FULL, 2.6))
+    gs = fig.add_gridspec(1, 3, width_ratios=[1, 1, 1.05], wspace=0.1)
+    ax_a = fig.add_subplot(gs[0])
+    ax_b = fig.add_subplot(gs[1], sharey=ax_a)
+    for ax, (m, mlabel) in zip((ax_a, ax_b), METRICS.items()):
         sub = pw[pw["metric"] == m]
         for ds in DATASETS:
             s = sub[sub["dataset"] == ds].set_index("b").reindex(order)
@@ -134,13 +160,37 @@ def fig_paired_differences():
                         capsize=0, label=DATASETS[ds], mec="white", mew=0.5)
         ax.axvline(0, color=INK2, lw=0.8)
         ax.axhline(len(order) - 1.5, color=GRID, lw=0.8)
-        ax.set_yticks(range(len(order)), labels)
-        ax.invert_yaxis()
         ax.grid(axis="y", visible=False)
-        ax.set_xlabel(f"SCAFFOLD minus alternative, {mlabel}")
+        ax.set_xlabel(f"SCAFFOLD $-$ alternative ({mlabel})")
         ax.set_title(("a  " if m == "auc_roc" else "b  ") + mlabel)
-    axes[0].legend(loc="lower center", bbox_to_anchor=(1.05, -0.42), ncol=3, handletextpad=0.1)
-    fig.tight_layout(w_pad=1.5)
+    ax_a.set_yticks(range(len(order)), labels)
+    ax_a.invert_yaxis()
+    ax_b.tick_params(axis="y", labelleft=False, length=0)
+    ax_a.legend(loc="upper center", bbox_to_anchor=(1.04, -0.2), ncol=2, handletextpad=0.1, columnspacing=1.2)
+
+    # c: SCAFFOLD - FedAvg = (FedAvg-SGD - FedAvg) + (SCAFFOLD - FedAvg-SGD)
+    ax_c = fig.add_subplot(gs[2])
+    dec = control_decomposition()
+    groups = [(ds, m) for ds in ("mimic", "eicu") for m in METRICS]
+    glabels = [f"{'MIMIC-IV' if ds == 'mimic' else 'eICU-CRD'}, {METRICS[m]}" for ds, m in groups]
+    parts = {"sgd": ("Local SGD (FedAvg-SGD $-$ FedAvg)", GRAY, "s", -0.15),
+             "cv": ("Control variates (SCAFFOLD $-$ FedAvg-SGD)", INK, "o", 0.15)}
+    for part, (lab, col, mk, off) in parts.items():
+        d = dec[dec["part"] == part].set_index(["dataset", "metric"]).reindex(groups)
+        y = np.arange(len(groups)) + off
+        ax_c.errorbar(d["mean"], y, xerr=[d["mean"] - d["lo"], d["hi"] - d["mean"]], fmt=mk, ms=3.5,
+                      color=col, ecolor=col, elinewidth=1, capsize=0, label=lab, mec="white", mew=0.5)
+    ax_c.axvline(0, color=INK2, lw=0.8)
+    ax_c.axhline(1.5, color=GRID, lw=0.8)
+    ax_c.set_yticks(range(len(groups)), glabels)
+    ax_c.yaxis.tick_right()
+    ax_c.tick_params(axis="y", length=0)
+    ax_c.invert_yaxis()
+    ax_c.grid(axis="y", visible=False)
+    ax_c.spines["right"].set_visible(False)
+    ax_c.set_xlabel("Contribution to SCAFFOLD $-$ FedAvg")
+    ax_c.set_title("c  Source of SCAFFOLD's margin over FedAvg")
+    ax_c.legend(loc="upper left", bbox_to_anchor=(-0.02, -0.2), ncol=1, handletextpad=0.1)
     save(fig, "fig3_paired_differences")
 
 

@@ -170,12 +170,12 @@ def table_calibration():
 def table_tuning():
     grids = {
         "FedProx": "$\\mu \\in \\{0.001, 0.01, 0.1, 1\\}$",
-        "SCAFFOLD": "local SGD lr $\\in \\{0.003, 0.01, 0.03, 0.1, 0.3, 1\\}$\\textsuperscript{a}, $\\eta_g \\in \\{0.5, 1\\}$",
+        "SCAFFOLD": "local SGD lr $\\in \\{0.003, 0.01, 0.03, 0.1, 0.3, 1, 3^{\\mathrm{b}}\\}$\\textsuperscript{a}, $\\eta_g \\in \\{0.5, 1\\}$",
         "FedAdagrad": "$\\eta \\in \\{0.001, 0.01, 0.1\\}$, $\\tau \\in \\{10^{-3}, 10^{-2}\\}$",
         "FedAdam": "$\\eta \\in \\{0.001, 0.01, 0.1\\}$, $\\tau \\in \\{10^{-3}, 10^{-2}\\}$",
         "FedYogi": "$\\eta \\in \\{0.001, 0.01, 0.1\\}$, $\\tau \\in \\{10^{-3}, 10^{-2}\\}$",
         "FedCluster": "DBSCAN radius quantile $\\in \\{0.25, 0.5, 0.75\\}$",
-        "FedAvgSGD": "local SGD lr $\\in \\{0.003, 0.01, 0.03, 0.1, 0.3, 1\\}$\\textsuperscript{a}",
+        "FedAvgSGD": "local SGD lr $\\in \\{0.003, 0.01, 0.03, 0.1, 0.3, 1, 3^{\\mathrm{b}}\\}$\\textsuperscript{a}",
     }
     labels = {"FedAvgSGD": "FedAvg-SGD (control)"}
     names = {"mu": "$\\mu$", "lr_scaffold": "lr", "eta_g": "$\\eta_g$", "eta_adagrad": "$\\eta$",
