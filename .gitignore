@@ -23,3 +23,4 @@ __pycache__/
 results/**/log*.txt
 *.zip
 results/runs/control_log.txt
+submission_rita/
