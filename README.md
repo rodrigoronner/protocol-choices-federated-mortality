@@ -17,7 +17,9 @@ every comparison is repeated over ten seeds and tested with a Friedman test foll
 Holm-corrected comparisons, and calibration is evaluated before and after Platt
 recalibration. The code also measures how much four protocol choices change the
 conclusions: predictors coded at discharge, client-level SMOTE, evaluating the last round
-instead of the best validation round, and untuned hyperparameters.
+instead of the best validation round, and untuned hyperparameters. A control run of FedAvg
+with SCAFFOLD's local optimizer (FedAvg-SGD) separates the effect of SCAFFOLD's control
+variates from that of its optimizer.
 
 ## Repository layout
 
@@ -68,7 +70,8 @@ PY=$(which python) N_PARALLEL=3 bash experiments/run_all.sh
 ```
 
 `run_all.sh` can be stopped and restarted: finished tuning configurations and runs are
-skipped. The full study (2 tuning grids, 118 federated and 45 centralized runs) took about
+skipped. The full study (2 tuning grids, 118 federated and 45 centralized runs, plus the tuning and 20 runs of
+the FedAvg-SGD control) took about
 two days on a 10-core laptop with three runs in parallel; training runs on the CPU, which
 was faster than Apple's MPS device for this small model (`FEDMIMIC_DEVICE` overrides it).
 

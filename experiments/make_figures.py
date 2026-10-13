@@ -1,5 +1,4 @@
-"""Figures for the RITA manuscript (vector PDF, sized for the RITA template:
-3.35 in per column, 6.9 in full width).
+"""Figures for the manuscript (vector PDF, 3.35 in per column, 6.9 in full width).
 
 One visual system for every figure: sans 7.5 pt, solid hairline grid, no top
 or right spines, SCAFFOLD as the emphasized series (blue) and the other

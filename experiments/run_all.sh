@@ -24,6 +24,8 @@ for DS in mimic eicu; do
 done
 
 "$PY" experiments/jobs.py --run "$N"
+# Control for SCAFFOLD (FedAvg-SGD): its tuning, ten seeds and the paired comparison.
+"$PY" experiments/run_control.py --parallel "$N" > results/runs/control_log.txt 2>&1
 
 for DS in mimic eicu eicu_aps; do
     "$PY" experiments/aggregate.py --dataset "$DS" > "results/runs/$DS/aggregate.txt"

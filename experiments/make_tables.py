@@ -1,4 +1,4 @@
-"""LaTeX table bodies for the RITA manuscript, generated from the result CSVs
+"""LaTeX table bodies for the manuscript, generated from the result CSVs
 so that no number in a table is typed by hand.
 
     python experiments/make_tables.py
