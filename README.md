@@ -4,6 +4,35 @@ Code and aggregated results for the study *"Protocol Choices Matter More Than th
 Aggregation Algorithm: Federated Learning for In-Hospital Mortality Prediction in
 Care-Unit and Multi-Hospital Federations"* (under review).
 
+## In plain language
+
+Hospitals hold records that could train software to flag which admitted patients are at
+highest risk of dying, so that care teams can act earlier. Such models work better when
+trained on many hospitals, but patient privacy prevents the hospitals from pooling their
+records. *Federated learning* avoids pooling: each hospital trains the model on its own
+records and sends only the model updates to a server, which combines them into a shared
+model. There are several ways of combining the updates (*aggregation strategies*), and many
+studies try to find the best one.
+
+This study shows that **how the comparison is run matters more than which strategy is
+chosen**. Seven strategies were compared on two federations, the 12 care units of one
+hospital (where the Emergency Department holds 79% of the stays) and 49 independent
+hospitals, under an evaluation protocol that uses only information a real deployment would
+have. In the care-unit federation, three choices common in published comparisons each
+changed the results more than the choice of strategy, whose spread was 0.019 in AUC-ROC: using diagnosis codes that are only
+recorded at discharge (+0.038), creating synthetic patients within each hospital to balance
+the rare deaths (up to −0.074), and reporting the model from the last training round instead
+of the best one (up to −0.084).
+
+Under the realistic protocol, SCAFFOLD was the most accurate strategy in both federations,
+but only by a small margin, and federated training was as accurate as pooling all the data
+across the 49 hospitals. Common corrections for rare outcomes made the models overestimate
+risk; a simple recalibration step (Platt scaling), which the hospitals can fit without
+sharing records, restored accurate risk estimates. The practical lesson: fix a realistic
+evaluation protocol first, and only then rank federated learning strategies.
+
+## Study summary
+
 The study compares seven federated aggregation strategies (FedAvg, FedProx, SCAFFOLD,
 FedAdagrad, FedAdam, FedYogi and FedCluster) for in-hospital mortality prediction on two
 federations built with the same pipeline:
